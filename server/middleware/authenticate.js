@@ -5,10 +5,7 @@ const keysecret = process.env.KEYSECRET;
 const authenticate = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
-    // console.log("this is token");
-    // console.log(token);
     const verifytoken = jwt.verify(token, keysecret);
-    // console.log(verifytoken);
     const rootuser = await signups.find({ _id: verifytoken._id });
     // console.log(rootuser);
     if (!rootuser) {
@@ -19,6 +16,7 @@ const authenticate = async (req, res, next) => {
     req.userid = rootuser[0]._id;
     next();
   } catch (error) {
+    // console.log(error);
     res
       .status(401)
       .json({ status: 401, message: "unauthorised, no token provide" });

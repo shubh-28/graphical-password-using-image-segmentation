@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const keysecret = "kuchbhikuchbhikuchbhikuchbhikuch";
+const keysecret = process.env.KEYSECRET;
 
 const signUpSchema = new mongoose.Schema({
   username: {
@@ -48,9 +48,7 @@ signUpSchema.pre("save", async function (next) {
 //token generate
 signUpSchema.methods.generateAuthtoken = async function () {
   try {
-    const token1 = jwt.sign({ _id: this._id }, keysecret, {
-      expiresIn: "1h",
-    });
+    const token1 = jwt.sign({ _id: this._id }, keysecret);
     this.tokens = this.tokens.concat({ token: token1 });
     await this.save();
     return token1;

@@ -9,7 +9,7 @@ const Navbar = () => {
 
   const logoutuser = async () => {
     let token = localStorage.getItem("userDataToken");
-    // console.log("naya vaala " + token);
+    // // console.log("naya vaala " + token);
 
     const res = await fetch("/api/logout", {
       method: "GET",
@@ -21,16 +21,16 @@ const Navbar = () => {
       credentials: "include",
     });
 
-    // console.log("loggout out user" + token);
+    // // console.log("loggout out user" + token);
     const data = await res.json();
-    console.log(data);
+    // console.log(data);
 
-    if (data.status == 201) {
-      console.log("user logout");
+    if (data.status === 201) {
+      // console.log("user logout");
       localStorage.removeItem("userDataToken");
       navigate("/");
     } else {
-      console.log("error");
+      // console.log("error");
     }
   };
 

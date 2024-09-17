@@ -142,17 +142,7 @@ function App() {
 
   return (
     <main>
-      {/* <RouterProvider router={router} /> */}
-      <div className="">
-        <select className="selects" placeholder="Select Projects" value={ddd}>
-          <option value="">Select project</option>
-          {projectNameForExecution.map((item, id) => (
-            <option className="asbb" key={id} value={item}>
-              {item}
-            </option>
-          ))}
-        </select>
-      </div>
+      <RouterProvider router={router} />
     </main>
   );
 }

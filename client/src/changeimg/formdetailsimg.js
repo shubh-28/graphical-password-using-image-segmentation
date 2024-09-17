@@ -16,18 +16,18 @@ export default function FormDetailsimg() {
   };
 
   const handleChangeFile = (e) => {
-    console.log("size in bytes: ", e.target.files[0].size);
+    // console.log("size in bytes: ", e.target.files[0].size);
     let size = e.target.files[0].size;
     size = size / 1024;
-    // console.log("size in kb: ", size);
+    // // console.log("size in kb: ", size);
     size = size / 1024;
-    console.log("size in mb: ", size);
+    // console.log("size in mb: ", size);
 
     if (size >= 2.5) {
       setimg("");
       alert("File too Big, please select a file less than 2.5mb");
     } else {
-      // console.log("img: ", e.target.files[0]);
+      // // console.log("img: ", e.target.files[0]);
       setimg(e.target.files[0]);
     }
   };
@@ -38,8 +38,8 @@ export default function FormDetailsimg() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (img == "") {
-      console.log("add an image or reduce image size!!");
+    if (img === "") {
+      // console.log("add an image or reduce image size!!");
       alert("add an image or reduce image size!!");
     } else {
       const formData = new FormData();
@@ -53,8 +53,8 @@ export default function FormDetailsimg() {
         body: formData,
       });
       const data = await res.json();
-      if (res.status === 404 || !data) {
-        console.log("invalid Username or Password");
+      if (res.status ==== 404 || !data) {
+        // console.log("invalid Username or Password");
         alert("invalid Username or Password");
       } else {
         alert("Your image password has been successfully changed!!");

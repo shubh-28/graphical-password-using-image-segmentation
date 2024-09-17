@@ -8,7 +8,7 @@ export default function FormDetailsreset() {
 
   const handleChange = (e) => {
     setpassword(e.target.value);
-    // console.log(password);
+    // // console.log(password);
   };
 
   let navigate = useNavigate();
@@ -20,8 +20,8 @@ export default function FormDetailsreset() {
       },
     });
     const data = await res.json();
-    if (data.status == 201) {
-      console.log("user Valid");
+    if (data.status === 201) {
+      // console.log("user Valid");
     } else {
       navigate("*");
     }
@@ -29,7 +29,7 @@ export default function FormDetailsreset() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password !== "") {
+    if (password !=== "") {
       const res = await fetch(`/api/${id}/${token}`, {
         method: "POST",
         headers: {
@@ -38,17 +38,17 @@ export default function FormDetailsreset() {
         body: JSON.stringify({ password }),
       });
       const data = await res.json();
-      // console.log(data.status);
-      if (data.status == 201) {
+      // // console.log(data.status);
+      if (data.status === 201) {
         setpassword("");
         setmessage(true);
       } else {
-        console.log(data.status);
+        // console.log(data.status);
         // alert("Token expired, generate a new link");
       }
     } else {
       alert("Enter Password");
-      console.log("enter password");
+      // console.log("enter password");
     }
   };
 

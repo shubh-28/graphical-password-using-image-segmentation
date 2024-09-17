@@ -19,16 +19,16 @@ export default function FormDetailsforget() {
       body: JSON.stringify({ email }),
     });
 
-    console.log(res);
+    // console.log(res);
     const data = await res.json();
-    console.log(data);
+    // console.log(data);
 
-    if (data.status == 201) {
+    if (data.status === 201) {
       setEmail("");
       setmessage(true);
     } else {
       alert("Invalid, Id not found");
-      console.log("this: " + res);
+      // console.log("this: " + res);
     }
   };
 

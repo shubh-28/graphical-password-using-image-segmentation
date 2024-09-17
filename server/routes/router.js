@@ -21,6 +21,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 const keysecret = process.env.KEYSECRET;
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:8000";
 
 //emailConfig
 let transporter = nodemailer.createTransport({
@@ -32,28 +33,28 @@ let transporter = nodemailer.createTransport({
 });
 
 router.post("/api/sendpasswordlink", async (req, res) => {
-  // console.log(req.body);
-  console.log("hello therer:");
+  // // console.log(req.body);
+  // console.log("hello therer:");
   const email = req.body.email;
   if (!email) {
     res.status(401).json({ status: 401, message: "Enter Your Email" });
   }
   try {
-    console.log("hello there: " + email);
+    // console.log("hello there: " + email);
     const userfind = await signups.findOne({ email: email });
-    // console.log("userfind: " + userfind);
+    // // console.log("userfind: " + userfind);
     //generate token for reset password
     const token = jwt.sign({ _id: userfind._id }, keysecret, {
       expiresIn: "120s",
     });
-    // console.log("token: " + token);
+    // // console.log("token: " + token);
     const setusertoken = await signups.findByIdAndUpdate(
       { _id: userfind._id },
       { verifytoken: token },
       { new: true }
     );
-    console.log("okokokok");
-    // console.log("setusertoken: " + setusertoken);
+    // console.log("okokokok");
+    // // console.log("setusertoken: " + setusertoken);
     if (setusertoken) {
       const mailtopt = {
         from: "goelvasu17@gmail.com",
@@ -63,12 +64,12 @@ router.post("/api/sendpasswordlink", async (req, res) => {
       };
       transporter.sendMail(mailtopt, (err, info) => {
         if (err) {
-          console.log("error: ", err);
+          // console.log("error: ", err);
           res
             .status(401)
             .json({ status: 401, message: "email not sent", error: err });
         } else {
-          console.log("Email sent ", info.response);
+          // console.log("Email sent ", info.response);
           res
             .status(201)
             .json({ status: 201, message: "email sent successfully" });
@@ -110,12 +111,12 @@ router.post("/api/register", async (req, res) => {
       const storeSignup = await newSignUp.save();
       const storeuser = await newuser.save();
       res.status(201).json({ status: 201, storeSignup });
-      // console.log(storeSignup);
-      // console.log(newSignUp);
+      // // console.log(storeSignup);
+      // // console.log(newSignUp);
     }
   } catch (err) {
     res.status(404).json(err);
-    console.log("catched an error during register");
+    // console.log("catched an error during register");
   }
 });
 
@@ -127,18 +128,18 @@ router.post("/api/login", async (req, res) => {
     res.status(404).json("please fill the data");
   }
   try {
-    console.log("Aaya");
+    // console.log("Aaya");
     const userValid = await signups.findOne({ username: username });
     if (userValid) {
       const isMatch = await bcrypt.compare(password, userValid.password);
-      console.log("yaha Aaya");
+      // console.log("yaha Aaya");
       if (!isMatch) {
-        console.log("something like password not matching");
+        // console.log("something like password not matching");
         res.status(404).json({ error: "Password is incorrect" });
       } else {
-        console.log("yaha bhi Aaya");
+        // console.log("yaha bhi Aaya");
         // const token = await userValid.generateAuthtoken();
-        // // console.log(token);
+        // // // console.log(token);
         // res.cookie("usercookie", token, {
         //   expires: new Date(Date.now() + 3600000),
         //   httpOnly: true,
@@ -151,10 +152,10 @@ router.post("/api/login", async (req, res) => {
         res.status(201).json({ status: 201 });
       }
     } else {
-      console.log("username not matching");
+      // console.log("username not matching");
       res.status(404).json({ error: "username is not used till now.." });
     }
-  } catch (error) {}
+  } catch (error) { }
 });
 
 //if you are valid
@@ -169,16 +170,16 @@ router.get("/api/validuser", authenticate, async (req, res) => {
 
 //when you click logout
 router.get("/api/logout", authenticate, async (req, res) => {
-  // console.log("token is: " + req.token);
-  // console.log("userid is: " + req.userid);
-  // console.log(req.rootuser[0].tokens.length);
+  // // console.log("token is: " + req.token);
+  // // console.log("userid is: " + req.userid);
+  // // console.log(req.rootuser[0].tokens.length);
   try {
     req.rootuser.tokens = req.rootuser[0].tokens.filter((curelem) => {
-      return curelem.token !== req.token;
+      return curelem.token !=== req.token;
     });
-    // console.log("cookie before: " + usercookie);
+    // // console.log("cookie before: " + usercookie);
     res.clearCookie("usercookie", { path: "/" });
-    // console.log("rootuser now is: " + req.rootuser.tokens.length);
+    // // console.log("rootuser now is: " + req.rootuser.tokens.length);
     req.rootuser[0].save();
     res.status(201).json({ status: 201, message: "good going" });
   } catch (error) {
@@ -188,12 +189,12 @@ router.get("/api/logout", authenticate, async (req, res) => {
 
 router.get("/api/forgetpassword/:id/:token", async (req, res) => {
   const { id, token } = req.params;
-  // console.log(id, token);
+  // // console.log(id, token);
   try {
     const validuser = await signups.findOne({ _id: id, verifytoken: token });
-    // console.log(validuser);
+    // // console.log(validuser);
     const verifyToken = jwt.verify(token, keysecret);
-    // console.log(verifyToken);
+    // // console.log(verifyToken);
     if (validuser && verifyToken._id) {
       res.status(201).json({ status: 201, validuser });
     } else {
@@ -207,19 +208,19 @@ router.get("/api/forgetpassword/:id/:token", async (req, res) => {
 router.post("/api/:id/:token", async (req, res) => {
   const { id, token } = req.params;
   const { password } = req.body;
-  // console.log("password: " + password);
+  // // console.log("password: " + password);
   try {
     const validuser = await signups.findOne({ _id: id, verifytoken: token });
-    // console.log("validuser: " + validuser);
+    // // console.log("validuser: " + validuser);
     const verifyToken = jwt.verify(token, keysecret);
-    // console.log(verifyToken);
+    // // console.log(verifyToken);
     if (validuser && verifyToken._id) {
       const newPassword = await bcrypt.hash(password, 12);
       const setnewpassword = await signups.findByIdAndUpdate(
         { _id: id },
         { password: newPassword }
       );
-      // console.log(setnewpassword);
+      // // console.log(setnewpassword);
       setnewpassword.save();
       res.status(201).json({ status: 201, setnewpassword });
     } else {
@@ -233,7 +234,7 @@ router.post("/api/:id/:token", async (req, res) => {
 //post request contact us
 router.post("/api/contact", async (req, res) => {
   const { username, email, number, place, feedback } = req.body;
-  //   console.log(req.body);
+  //   // console.log(req.body);
 
   if (!username || !email || !number || !place || !feedback) {
     res.status(404).json("please fill the data");
@@ -252,12 +253,12 @@ router.post("/api/contact", async (req, res) => {
 
       const preuser = await contacts.findOne({ email: email });
       if (preuser) {
-        // console.log("baad me");
+        // // console.log("baad me");
         const add = await contacts.updateMany(
           { email: email },
           { $push: { feedbacks: feedback } }
         ); // add "Sports" element
-        console.log(add);
+        // console.log(add);
       } else {
         const newcontact = new contacts({
           username: username,
@@ -268,7 +269,7 @@ router.post("/api/contact", async (req, res) => {
         });
         //   newcontact.insert()
         newcontact.save();
-        //   console.log("store: " + storecontact);
+        //   // console.log("store: " + storecontact);
         res.status(201).json({ status: 201 });
       }
 
@@ -278,14 +279,14 @@ router.post("/api/contact", async (req, res) => {
     }
   } catch (err) {
     res.status(404).json(err);
-    console.log("catched an error during register");
+    // console.log("catched an error during register");
   }
 });
 
 router.post("/api/imgreg", upload.single("image"), async (req, res) => {
-  console.log(122);
-  console.log(req.file);
-  console.log(req.body);
+  // console.log(122);
+  // console.log(req.file);
+  // console.log(req.body);
   try {
     const username = req.body.username;
     const imageurl = req.file.path;
@@ -293,11 +294,11 @@ router.post("/api/imgreg", upload.single("image"), async (req, res) => {
       return res.send({ status: 400, message: "bad request" });
     }
 
-    let img = `https://merncarbackend.onrender.com/${imageurl}`;
-    console.log("img: ", img);
+    let img = `${BACKEND_URL}/${imageurl}`;
+    // console.log("img: ", img);
 
     let parts = [];
-    console.log("hhhhhh", parts.length);
+    // console.log("hhhhhh", parts.length);
 
     await loadImage(img).then((img) => {
       const canvas = createCanvas(img.width / 3, img.height / 3);
@@ -305,7 +306,7 @@ router.post("/api/imgreg", upload.single("image"), async (req, res) => {
       ctx.moveTo(0, 0);
       let w2 = img.width / 3;
       let h2 = img.height / 3;
-      console.log("w2: ", w2, "h2: ", h2);
+      // console.log("w2: ", w2, "h2: ", h2);
       for (let i = 0; i < 9; i++) {
         let x = (-w2 * i) % (w2 * 3);
         let y;
@@ -316,32 +317,32 @@ router.post("/api/imgreg", upload.single("image"), async (req, res) => {
         } else {
           y = -h2 * 2;
         }
-        console.log("x: ", x, "y: ", y);
+        // console.log("x: ", x, "y: ", y);
         canvas.width = w2;
         canvas.height = h2;
         ctx.drawImage(img, x, y, w2 * 3, h2 * 3);
         parts.push(canvas.toDataURL());
-        console.log("i: ", i);
-        // console.log("parts[i]: ", parts[i]);
+        // console.log("i: ", i);
+        // // console.log("parts[i]: ", parts[i]);
         add(i, parts[i], username, imageurl);
       }
     });
 
-    console.log("ddddddddddd:  ");
-    console.log("add: ", add);
+    // console.log("ddddddddddd:  ");
+    // console.log("add: ", add);
     return res.send({ status: 200, message: "good request" });
-  } catch (error) {}
+  } catch (error) { }
 });
 
 router.post("/api/getuser", async (req, res) => {
   try {
     const { username } = req.body;
     const requser = await users.findOne({ username: username });
-    console.log("hanji user: ", username);
+    // console.log("hanji user: ", username);
 
     res.send({ status: "ok", data: requser });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 });
 
@@ -349,7 +350,7 @@ router.post("/api/imglogin", async (req, res) => {
   const { username } = req.body;
   const userValid = await signups.findOne({ username: username });
   const token = await userValid.generateAuthtoken();
-  // console.log(token);
+  // // console.log(token);
   res.cookie("usercookie", token, {
     expires: new Date(Date.now() + 3600000),
     httpOnly: true,
@@ -362,7 +363,7 @@ router.post("/api/imglogin", async (req, res) => {
 });
 
 const add = async (i, parts, username, imageurl) => {
-  console.log("aa: ", i);
+  // console.log("aa: ", i);
   await users.updateMany(
     { username: username },
     {
@@ -377,7 +378,7 @@ const add = async (i, parts, username, imageurl) => {
 };
 
 const change = async (i, parts, username, imageurl) => {
-  console.log("aa: ", i);
+  // console.log("aa: ", i);
   await users.updateOne(
     { username: username, "imgsegment.num": i },
     {
@@ -390,9 +391,9 @@ const change = async (i, parts, username, imageurl) => {
 };
 
 router.post("/api/changeimg", upload.single("image"), async (req, res) => {
-  console.log(1);
-  console.log(req.body);
-  console.log(req.file);
+  // console.log(1);
+  // console.log(req.body);
+  // console.log(req.file);
   const { password, username } = req.body;
   if (!password || !username) {
     res.status(404).json("please fill the data");
@@ -401,27 +402,27 @@ router.post("/api/changeimg", upload.single("image"), async (req, res) => {
     const userValid = await signups.findOne({ username: username });
     if (userValid) {
       const isMatch = await bcrypt.compare(password, userValid.password);
-      console.log("yaha Aaya");
+      // console.log("yaha Aaya");
       if (!isMatch) {
-        console.log("something like password not matching");
+        // console.log("something like password not matching");
         res.status(404).json({ error: "Password is incorrect" });
       } else {
-        console.log("yaha bhi Aaya");
+        // console.log("yaha bhi Aaya");
         const imageurl = req.file.path;
         if (!imageurl) {
           return res.send({ status: 400, message: "bad request" });
         }
-        let img = `https://merncarbackend.onrender.com/${imageurl}`;
-        console.log("img: ", img);
+        let img = `${BACKEND_URL}/${imageurl}`;
+        // console.log("img: ", img);
         let parts = [];
-        console.log("hhhhhh", parts.length);
+        // console.log("hhhhhh", parts.length);
         await loadImage(img).then((img) => {
           const canvas = createCanvas(img.width / 3, img.height / 3);
           const ctx = canvas.getContext("2d");
           ctx.moveTo(0, 0);
           let w2 = img.width / 3;
           let h2 = img.height / 3;
-          console.log("w2: ", w2, "h2: ", h2);
+          // console.log("w2: ", w2, "h2: ", h2);
           for (let i = 0; i < 9; i++) {
             let x = (-w2 * i) % (w2 * 3);
             let y;
@@ -432,27 +433,27 @@ router.post("/api/changeimg", upload.single("image"), async (req, res) => {
             } else {
               y = -h2 * 2;
             }
-            console.log("x: ", x, "y: ", y);
+            // console.log("x: ", x, "y: ", y);
             canvas.width = w2;
             canvas.height = h2;
             ctx.drawImage(img, x, y, w2 * 3, h2 * 3);
             parts.push(canvas.toDataURL());
-            console.log("i: ", i);
-            // console.log("parts[i]: ", imageurl);
-            // console.log("parts ", username);
+            // console.log("i: ", i);
+            // // console.log("parts[i]: ", imageurl);
+            // // console.log("parts ", username);
             change(i, parts[i], username, imageurl);
-            console.log("ddddddddddd:  ");
-            console.log("add: ", change);
+            // console.log("ddddddddddd:  ");
+            // console.log("add: ", change);
           }
           return res.send({ status: 200, message: "good request" });
         });
         res.status(201).json({ status: 201 });
       }
     } else {
-      console.log("username not matching");
+      // console.log("username not matching");
       res.status(404).json({ error: "username is not used till now.." });
     }
-  } catch (error) {}
+  } catch (error) { }
 });
 
 module.exports = router;

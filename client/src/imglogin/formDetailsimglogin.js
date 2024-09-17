@@ -31,12 +31,13 @@ export default function FormDetailslogin() {
       body: JSON.stringify({ username: location.state.username }),
     });
     const data = await res.json();
-    if (data.status == 401 || !data) {
+    // console.log("data: ", data);
+    if (data.status ==== 401 || !data) {
       // navigate("../*");
-      console.log("error in showing img");
+      // console.log("error in showing img");
     } else {
-      console.log("showing img");
-      console.log("data: ", data.data.imgsegment);
+      // console.log("showing img");
+      // console.log("data: ", data.data.imgsegment);
 
       // let ar = [];
       // ar.push(
@@ -44,9 +45,9 @@ export default function FormDetailslogin() {
       //     return i.imgg;
       //   })
       // );
-      // console.log("ar: ", ar);
+      // // console.log("ar: ", ar);
       // const set1 = async (data) => {
-      //   console.log("yha are");
+      //   // console.log("yha are");
       //   setdata({ dataaa: ar[0] });
       // };
       // set1(data);
@@ -57,7 +58,7 @@ export default function FormDetailslogin() {
             numss: data.data.imgsegment[i].num,
           },
         ];
-        if (i == 0) {
+        if (i ==== 0) {
           setdata((current) => [...arr]);
         } else {
           setdata((current) => [...current, ...arr]);
@@ -71,8 +72,8 @@ export default function FormDetailslogin() {
   }, []);
 
   useEffect(() => {
-    console.log("length ", dataa.length);
-    // console.log("length ", num.length);
+    // console.log("length ", dataa.length);
+    // // console.log("length ", num.length);
   }, [dataa]);
 
   const routeChangereg = () => {
@@ -89,13 +90,13 @@ export default function FormDetailslogin() {
     let id = event.currentTarget.className;
     array.push(id);
     let p = document.getElementById(id);
-    console.log(array);
-    console.log("key, ", p);
-    if (array.length === 2) {
+    // console.log(array);
+    // console.log("key, ", p);
+    if (array.length ==== 2) {
       let a = document.getElementById(array[0]);
       let b = document.getElementById(array[1]);
-      console.log("a ", a.name);
-      console.log("b ", b.className);
+      // console.log("a ", a.name);
+      // console.log("b ", b.className);
       let temp = a.src;
       a.src = b.src;
       b.src = temp;
@@ -119,17 +120,17 @@ export default function FormDetailslogin() {
     let i = document.getElementById("image8");
 
     if (
-      a.name == a.className &&
-      b.name == b.className &&
-      c.name == c.className &&
-      d.name == d.className &&
-      e.name == e.className &&
-      f.name == f.className &&
-      g.name == g.className &&
-      h.name == h.className &&
-      i.name == i.className
+      a.name === a.className &&
+      b.name === b.className &&
+      c.name === c.className &&
+      d.name === d.className &&
+      e.name === e.className &&
+      f.name === f.className &&
+      g.name === g.className &&
+      h.name === h.className &&
+      i.name === i.className
     ) {
-      // console.log("bade shi jare");
+      // // console.log("bade shi jare");
 
       //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
       //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -146,17 +147,17 @@ export default function FormDetailslogin() {
       //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
       //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
       //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-      console.log("message2");
-      console.log(res);
+      // console.log("message2");
+      // console.log(res);
       const data = await res.json();
-      console.log("message3");
-      console.log(data.error);
+      // console.log("message3");
+      // console.log(data.error);
 
-      console.log(res);
-      // console.log(res.status);
-      if (res.status === 404 || !data) {
+      // console.log(res);
+      // // console.log(res.status);
+      if (res.status ==== 404 || !data) {
         alert(data.error);
-        console.log("invalid login");
+        // console.log("invalid login");
       } else {
         // alert("valid login");
         localStorage.setItem("userDataToken", data.result.token);
@@ -171,13 +172,13 @@ export default function FormDetailslogin() {
       alert("password is incorrect!!");
     }
     // const username = location.state.username;
-    // console.log("message1");
+    // // console.log("message1");
     // setErrors(validation(values));
-    console.log("message");
+    // console.log("message");
   };
 
-  console.log("nnnn: ", dataa);
-  // console.log("nnn1n: ", numos);
+  // console.log("nnnn: ", dataa);
+  // // console.log("nnn1n: ", numos);
   return (
     <div style={{ marginBottom: "8rem" }}>
       {spin ? (
@@ -202,7 +203,7 @@ export default function FormDetailslogin() {
               dataa[a] = temp;
             })}
             {dataa.map((i, a) => {
-              console.log("a ", a);
+              // console.log("a ", a);
               return (
                 <button
                   className={`image${a}`}

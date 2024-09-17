@@ -6,6 +6,7 @@ export default function FormDetailslogin() {
 
   const DashboardValid = async () => {
     let token = localStorage.getItem("userDataToken");
+    // console.log("Token: ", token);
     const res = await fetch("/api/validuser", {
       method: "GET",
       headers: {
@@ -13,12 +14,12 @@ export default function FormDetailslogin() {
         Authorization: token,
       },
     });
-    // console.log("this is " + token + "dashboard vaslid");
+    // // console.log("this is " + token + "dashboard vaslid");
     const data = await res.json();
-    if (data.status == 401 || !data) {
+    if (data.status === 401 || !data) {
       navigate("../*");
     } else {
-      console.log("user verify");
+      // console.log("user verify");
       navigate("/dash");
     }
   };

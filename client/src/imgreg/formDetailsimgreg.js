@@ -8,16 +8,16 @@ const FormDetailsimgreg = () => {
   const location = useLocation();
 
   const [img, setimg] = useState("");
-  // console.log(img, 12);
-  // console.log("username: ", location.state.username);
+  // // console.log(img, 12);
+  // // console.log("username: ", location.state.username);
 
   const handleChange = (e) => {
-    console.log("size in bytes: ", e.target.files[0].size);
+    // console.log("size in bytes: ", e.target.files[0].size);
     let size = e.target.files[0].size;
     size = size / 1024;
-    console.log("size in kb: ", size);
+    // console.log("size in kb: ", size);
     size = size / 1024;
-    console.log("size in mb: ", size);
+    // console.log("size in mb: ", size);
 
     if (size >= 2.5) {
       setimg("");
@@ -29,12 +29,12 @@ const FormDetailsimgreg = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (img == "") {
-      console.log("add an image or reduce image size!!");
+    if (img === "") {
+      // console.log("add an image or reduce image size!!");
       alert("add an image or reduce image size!!");
     } else {
-      console.log("go ahead");
-      console.log("imageeeee: ", img);
+      // console.log("go ahead");
+      // console.log("imageeeee: ", img);
       const formData = new FormData();
       formData.append("image", img);
       formData.append("username", location.state.username);
@@ -44,8 +44,8 @@ const FormDetailsimgreg = () => {
         body: formData,
       });
       const data = await res.json();
-      if (res.status === 404 || !data) {
-        console.log("invalid reg");
+      if (res.status ==== 404 || !data) {
+        // console.log("invalid reg");
       } else {
         alert("You are registered successfully, Now login!!");
         navigate(`../login`);

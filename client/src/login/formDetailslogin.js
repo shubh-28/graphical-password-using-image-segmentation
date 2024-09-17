@@ -31,7 +31,7 @@ export default function FormDetailslogin() {
     return errors;
   };
 
-  // console.log(values);
+  // // console.log(values);
   const handleChange = (e) => {
     setValues((values) => ({ ...values, [e.target.name]: e.target.value }));
   };
@@ -39,9 +39,9 @@ export default function FormDetailslogin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { username, password } = values;
-    console.log("message1");
+    // console.log("message1");
     setErrors(validation(values));
-    console.log("message");
+    // console.log("message");
     const res = await fetch("/api/login", {
       method: "post",
       headers: {
@@ -52,17 +52,17 @@ export default function FormDetailslogin() {
         password: password,
       }),
     });
-    console.log("message2");
-    console.log(res);
+    // console.log("message2");
+    // console.log(res);
     const data = await res.json();
-    console.log("message3");
-    console.log(data.error);
+    // console.log("message3");
+    // console.log(data.error);
 
-    console.log(res);
-    // console.log(res.status);
-    if (res.status === 404 || !data) {
+    // console.log(res);
+    // // console.log(res.status);
+    if (res.status ==== 404 || !data) {
       alert(data.error);
-      console.log("invalid login");
+      // console.log("invalid login");
     } else {
       // alert("valid login");
       // localStorage.setItem("userDataToken", data.result.token);

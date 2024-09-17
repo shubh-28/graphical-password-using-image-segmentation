@@ -7,5 +7,5 @@ mongoose
   .connect(DB, {
     useUnifiedTopology: true,
   })
-  .then(() => console.log("connection start"))
-  .catch((err) => console.log(err.message));
+  .then(() => // console.log("connection start"))
+  .catch((err) => // console.log(err.message));
