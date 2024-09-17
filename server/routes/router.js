@@ -175,7 +175,7 @@ router.get("/api/logout", authenticate, async (req, res) => {
   // // console.log(req.rootuser[0].tokens.length);
   try {
     req.rootuser.tokens = req.rootuser[0].tokens.filter((curelem) => {
-      return curelem.token !=== req.token;
+      return curelem.token !== req.token;
     });
     // // console.log("cookie before: " + usercookie);
     res.clearCookie("usercookie", { path: "/" });

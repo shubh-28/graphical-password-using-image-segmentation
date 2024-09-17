@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+
 export default function FormDetailsreset() {
   const [message, setmessage] = useState(false);
   const [password, setpassword] = useState("");
@@ -13,7 +15,7 @@ export default function FormDetailsreset() {
 
   let navigate = useNavigate();
   const userValid = async () => {
-    const res = await fetch(`/api/forgetpassword/${id}/${token}`, {
+    const res = await fetch(`${BACKEND_URL}/api/forgetpassword/${id}/${token}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -29,8 +31,8 @@ export default function FormDetailsreset() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password !=== "") {
-      const res = await fetch(`/api/${id}/${token}`, {
+    if (password !== "") {
+      const res = await fetch(`${BACKEND_URL}/api/${id}/${token}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -15,6 +15,8 @@ export default function FormDetailsimg() {
     setval((val) => ({ ...val, [e.target.name]: e.target.value }));
   };
 
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+
   const handleChangeFile = (e) => {
     // console.log("size in bytes: ", e.target.files[0].size);
     let size = e.target.files[0].size;
@@ -47,13 +49,13 @@ export default function FormDetailsimg() {
       formData.append("password", val.password);
       formData.append("username", val.username);
 
-      const res = await fetch("/api/changeimg", {
+      const res = await fetch(BACKEND_URL + "/api/changeimg", {
         method: "post",
         // headers: { "content-type": "application/JSON" },
         body: formData,
       });
       const data = await res.json();
-      if (res.status ==== 404 || !data) {
+      if (res.status === 404 || !data) {
         // console.log("invalid Username or Password");
         alert("invalid Username or Password");
       } else {

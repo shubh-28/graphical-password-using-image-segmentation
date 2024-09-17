@@ -3,6 +3,8 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useNavigate, useLocation } from "react-router-dom";
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+
 const FormDetailsimgreg = () => {
   let navigate = useNavigate();
   const location = useLocation();
@@ -38,13 +40,13 @@ const FormDetailsimgreg = () => {
       const formData = new FormData();
       formData.append("image", img);
       formData.append("username", location.state.username);
-      const res = await fetch("/api/imgreg", {
+      const res = await fetch(BACKEND_URL + "/api/imgreg", {
         method: "post",
         // headers: { "content-type": "application/JSON" },
         body: formData,
       });
       const data = await res.json();
-      if (res.status ==== 404 || !data) {
+      if (res.status === 404 || !data) {
         // console.log("invalid reg");
       } else {
         alert("You are registered successfully, Now login!!");

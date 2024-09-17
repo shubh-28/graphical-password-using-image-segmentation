@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+
 export default function FormDetailslogin() {
   let num = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   let array = [];
@@ -23,7 +25,7 @@ export default function FormDetailslogin() {
   });
 
   const showimg = async () => {
-    const res = await fetch("/api/getuser", {
+    const res = await fetch(BACKEND_URL + "/api/getuser", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -32,7 +34,7 @@ export default function FormDetailslogin() {
     });
     const data = await res.json();
     // console.log("data: ", data);
-    if (data.status ==== 401 || !data) {
+    if (data.status === 401 || !data) {
       // navigate("../*");
       // console.log("error in showing img");
     } else {
@@ -58,7 +60,7 @@ export default function FormDetailslogin() {
             numss: data.data.imgsegment[i].num,
           },
         ];
-        if (i ==== 0) {
+        if (i === 0) {
           setdata((current) => [...arr]);
         } else {
           setdata((current) => [...current, ...arr]);
@@ -92,7 +94,7 @@ export default function FormDetailslogin() {
     let p = document.getElementById(id);
     // console.log(array);
     // console.log("key, ", p);
-    if (array.length ==== 2) {
+    if (array.length === 2) {
       let a = document.getElementById(array[0]);
       let b = document.getElementById(array[1]);
       // console.log("a ", a.name);
@@ -135,7 +137,7 @@ export default function FormDetailslogin() {
       //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
       //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
-      const res = await fetch("/api/imglogin", {
+      const res = await fetch(BACKEND_URL + "/api/imglogin", {
         method: "post",
         headers: {
           "Content-Type": "application/json",
@@ -155,7 +157,7 @@ export default function FormDetailslogin() {
 
       // console.log(res);
       // // console.log(res.status);
-      if (res.status ==== 404 || !data) {
+      if (res.status === 404 || !data) {
         alert(data.error);
         // console.log("invalid login");
       } else {

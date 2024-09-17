@@ -7,11 +7,13 @@ const Navbar = () => {
     navigate("*");
   };
 
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+
   const logoutuser = async () => {
     let token = localStorage.getItem("userDataToken");
     // // console.log("naya vaala " + token);
 
-    const res = await fetch("/api/logout", {
+    const res = await fetch(BACKEND_URL + "/api/logout", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

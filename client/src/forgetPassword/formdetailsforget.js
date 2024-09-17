@@ -9,9 +9,11 @@ export default function FormDetailsforget() {
     setEmail(e.target.value);
   };
 
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch("/api/sendpasswordlink", {
+    const res = await fetch(BACKEND_URL + "/api/sendpasswordlink", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

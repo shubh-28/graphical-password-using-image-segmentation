@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+
 export default function FormDetailsreg() {
   let navigate = useNavigate();
   const [errors, setErrors] = useState({});
@@ -42,7 +44,7 @@ export default function FormDetailsreg() {
     }
 
     // console.log(errors);
-    if (Object.keys(errors).length !=== 0) {
+    if (Object.keys(errors).length !== 0) {
       flag = false;
     }
     return [errors, flag];
@@ -61,148 +63,148 @@ export default function FormDetailsreg() {
     // // console.log("flag: " + flag);
 
     if (
-      Object.keys(errors).length ==== 0 &&
-        values.username !=== "" &&
-          values.password !=== "" &&
-            values.number !=== "" &&
-              values.email !=== "" &&
-                flag ==== true
+      Object.keys(errors).length === 0 &&
+      values.username !== "" &&
+      values.password !== "" &&
+      values.number !== "" &&
+      values.email !== "" &&
+      flag === true
     ) {
-    const { username, password, email, number } = values;
-    const res = await fetch("/api/register", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-        email: email,
-        number: number,
-      }),
-    });
-    const data = await res.json();
-
-    // // console.log(data);
-    // // console.log(res.status);
-    if (res.status ==== 404 || !data) {
-      alert("this is already used, please select something different");
-      // console.log("invalid registration");
-    } else {
-      alert(
-        "Registration step 1 is completed, now enter an image for Graphical Password..."
-      );
-      navigate("/imgreg", { state: { username: username } });
-      setValues({
-        ...values,
-        username: "",
-        password: "",
-        number: "",
-        email: "",
+      const { username, password, email, number } = values;
+      const res = await fetch(BACKEND_URL + "/api/register", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+          email: email,
+          number: number,
+        }),
       });
+      const data = await res.json();
+
+      // // console.log(data);
+      // // console.log(res.status);
+      if (res.status === 404 || !data) {
+        alert("this is already used, please select something different");
+        // console.log("invalid registration");
+      } else {
+        alert(
+          "Registration step 1 is completed, now enter an image for Graphical Password..."
+        );
+        navigate("/imgreg", { state: { username: username } });
+        setValues({
+          ...values,
+          username: "",
+          password: "",
+          number: "",
+          email: "",
+        });
+      }
+    } else {
+      alert("Solve the errors before submit");
     }
-  } else {
-    alert("Solve the errors before submit");
-  }
-};
+  };
 
-const routeChangelogin = () => {
-  let path = `../login`;
-  navigate(path);
-};
+  const routeChangelogin = () => {
+    let path = `../login`;
+    navigate(path);
+  };
 
-return (
-  <div>
-    <form className="reg" method="post" onSubmit={handleSubmit}>
-      <div className="first">
-        <div className="forErr">
-          <input
-            type="text"
-            name="username"
-            value={values.username}
-            onChange={handleChange}
-            placeholder="Your User Name"
-            required
-          />
-          {errors.username && (
-            <>
-              <span className="err" style={{ color: "red" }}>
-                {errors.username}
-              </span>
-            </>
-          )}
+  return (
+    <div>
+      <form className="reg" method="post" onSubmit={handleSubmit}>
+        <div className="first">
+          <div className="forErr">
+            <input
+              type="text"
+              name="username"
+              value={values.username}
+              onChange={handleChange}
+              placeholder="Your User Name"
+              required
+            />
+            {errors.username && (
+              <>
+                <span className="err" style={{ color: "red" }}>
+                  {errors.username}
+                </span>
+              </>
+            )}
+          </div>
+
+          <div id="email" className="forErr">
+            <input
+              type="email"
+              name="email"
+              value={values.email}
+              onChange={handleChange}
+              placeholder="Your Email"
+              required
+            />
+            {errors.email && (
+              <>
+                <span className="err" style={{ color: "red" }}>
+                  {errors.email}
+                </span>
+              </>
+            )}
+          </div>
         </div>
 
-        <div id="email" className="forErr">
-          <input
-            type="email"
-            name="email"
-            value={values.email}
-            onChange={handleChange}
-            placeholder="Your Email"
-            required
-          />
-          {errors.email && (
-            <>
-              <span className="err" style={{ color: "red" }}>
-                {errors.email}
-              </span>
-            </>
-          )}
-        </div>
-      </div>
+        <div className="first">
+          <div className="forErr">
+            <input
+              type="number"
+              name="number"
+              value={values.number}
+              onChange={handleChange}
+              maxLength="10"
+              required
+              placeholder="Your Mobile Number"
+            />
+            {errors.number && (
+              <>
+                <span className="err" style={{ color: "red" }}>
+                  {errors.number}
+                </span>
+              </>
+            )}
+          </div>
 
-      <div className="first">
-        <div className="forErr">
-          <input
-            type="number"
-            name="number"
-            value={values.number}
-            onChange={handleChange}
-            maxLength="10"
-            required
-            placeholder="Your Mobile Number"
-          />
-          {errors.number && (
-            <>
-              <span className="err" style={{ color: "red" }}>
-                {errors.number}
-              </span>
-            </>
-          )}
+          <div className="forErr">
+            <input
+              type="password"
+              name="password"
+              value={values.password}
+              onChange={handleChange}
+              placeholder="Your Password"
+              required
+            />
+            {errors.password && (
+              <>
+                <span className="err" style={{ color: "red" }}>
+                  {errors.password}
+                </span>
+              </>
+            )}
+          </div>
         </div>
 
-        <div className="forErr">
-          <input
-            type="password"
-            name="password"
-            value={values.password}
-            onChange={handleChange}
-            placeholder="Your Password"
-            required
-          />
-          {errors.password && (
-            <>
-              <span className="err" style={{ color: "red" }}>
-                {errors.password}
-              </span>
-            </>
-          )}
+        <div id="loginR">
+          Have an account?{" "}
+          <button className="btnLogin" onClick={routeChangelogin}>
+            Login
+          </button>
         </div>
-      </div>
-
-      <div id="loginR">
-        Have an account?{" "}
-        <button className="btnLogin" onClick={routeChangelogin}>
-          Login
-        </button>
-      </div>
-      <div id="btnR">
-        <button className="btn1" type="submit">
-          Regsiter
-        </button>
-      </div>
-    </form>
-  </div>
-);
+        <div id="btnR">
+          <button className="btn1" type="submit">
+            Regsiter
+          </button>
+        </div>
+      </form>
+    </div>
+  );
 }

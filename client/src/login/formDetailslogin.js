@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+
 export default function FormDetailslogin() {
   const [errors, setErrors] = useState({});
 
@@ -42,7 +44,7 @@ export default function FormDetailslogin() {
     // console.log("message1");
     setErrors(validation(values));
     // console.log("message");
-    const res = await fetch("/api/login", {
+    const res = await fetch(BACKEND_URL + "/api/login", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -60,7 +62,7 @@ export default function FormDetailslogin() {
 
     // console.log(res);
     // // console.log(res.status);
-    if (res.status ==== 404 || !data) {
+    if (res.status === 404 || !data) {
       alert(data.error);
       // console.log("invalid login");
     } else {
